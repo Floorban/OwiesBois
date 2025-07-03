@@ -59,7 +59,7 @@ public class SpaceMovement : MonoBehaviour
             mov = true;
             if (relSideSpeed < maxSpeed) {
                 relSideSpeed += acc;
-                if (transform.GetChild(1).eulerAngles.z < 16) {
+                if (transform.GetChild(1).eulerAngles.z < 16 || transform.GetChild(1).eulerAngles.z > 345) {
                     transform.GetChild(1).Rotate(new Vector3(0f, 0f, 0.1f));
                 }
             }
@@ -70,12 +70,14 @@ public class SpaceMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.D)) {
             mov = true;
+
             if (relSideSpeed < maxSpeed) {
                 if (transform.GetChild(1).eulerAngles.z < 0.1f) {
-                    transform.GetChild(1).rotation = Quaternion.Euler(0f, 0f, 359f);
+                    transform.GetChild(1).localRotation = Quaternion.Euler(0f, 0f, 359f);
                 }
                 relSideSpeed += acc;
-                if (transform.GetChild(1).eulerAngles.z > 0 || transform.GetChild(1).eulerAngles.z < 270) {
+                Debug.Log(transform.GetChild(1).eulerAngles.z);
+                if (transform.GetChild(1).eulerAngles.z < 16 || transform.GetChild(1).eulerAngles.z > 345) {
                     transform.GetChild(1).Rotate(new Vector3(0f, 0f, -0.1f));
                 }
             }
@@ -115,14 +117,11 @@ public class SpaceMovement : MonoBehaviour
             timer = 5;
         }
 
-        if (!mov) {
-            Debug.Log(transform.GetChild(1).eulerAngles.z);
-            if (transform.GetChild(1).eulerAngles.z > 0 && transform.GetChild(1).eulerAngles.z < 270) {
-                transform.GetChild(1).Rotate(new Vector3(0f, 0f, -0.1f));
-            } 
-            if (transform.GetChild(1).eulerAngles.z < 0 || transform.GetChild(1).eulerAngles.z > 270) {
-                transform.GetChild(1).Rotate(new Vector3(0f, 0f, 0.1f));
-            }
+        if (transform.GetChild(1).eulerAngles.z > 0 && transform.GetChild(1).eulerAngles.z < 270) {
+            transform.GetChild(1).Rotate(new Vector3(0f, 0f, -0.01f));
+        } 
+        if (transform.GetChild(1).eulerAngles.z < 0 || transform.GetChild(1).eulerAngles.z > 270) {
+            transform.GetChild(1).Rotate(new Vector3(0f, 0f, 0.01f));
         }
         if (startAnim) {
             StartAnim();
