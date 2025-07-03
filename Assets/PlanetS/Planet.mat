@@ -130,14 +130,14 @@ Material:
     - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Cloud1Size: 145.65
-    - _Cloud2Size: -0.8
-    - _CloudStrength: 1
+    - _Cloud1Size: 1.7
+    - _Cloud2Size: 0.78
+    - _CloudStrength: 0.92
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Displacement: 25.57
+    - _Displacement: 0.1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
@@ -155,7 +155,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RandomPlanet: 1
-    - _RandomSeed: 30.6
+    - _RandomSeed: 22.8
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
