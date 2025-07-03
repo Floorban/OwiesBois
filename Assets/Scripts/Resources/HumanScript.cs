@@ -13,12 +13,12 @@ public class HumanScript : MonoBehaviour{
         Red
     }
 
-    [SerializeField] float weigh;
+    [SerializeField] float weight;
     [SerializeField] appearance looks;
     [SerializeField] colour race;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start(){
-        weigh = Random.Range(40, 151);
+        weight = Random.Range(40, 151);
         switch (Random.Range(0,5)) { 
             case 0:
                 looks = appearance.Ugly;
@@ -44,6 +44,33 @@ public class HumanScript : MonoBehaviour{
                 race = HumanScript.colour.Red;
             break;
         }
+    }
+
+    public int GetValue() {
+        int raceValue = 0;
+        int appearanceValue = 0;
+        switch (race) {
+            case colour.Green:
+                raceValue = 10;
+                break;
+            case colour.Blue:
+                raceValue = 20;
+                break;
+            case colour.Red:
+                raceValue = 30;
+            break;
+        } switch (looks) {
+            case appearance.Mid:
+                appearanceValue = 10;
+                break;
+            case appearance.Pretty:
+                appearanceValue = 20;
+            break;
+            case appearance.Smexy:
+                appearanceValue = 30;
+            break;
+        }
+        return (int)(weight * 0.5 + raceValue * 0.3 + appearanceValue * 0.2) * 5;
     }
 
     // Update is called once per frame

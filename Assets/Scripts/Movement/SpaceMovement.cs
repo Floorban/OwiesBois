@@ -13,7 +13,7 @@ public class SpaceMovement : MonoBehaviour
     [SerializeField] float relSideSpeed = 0;
     [SerializeField] float relUpSpeed = 0;
 
-    [SerializeField] float timer = 3f;
+    [SerializeField] float timer = 1f;
     bool startAnim;
     bool animplaying =false;
     [SerializeField] float timeSinceStarted = 0f;
@@ -37,6 +37,10 @@ public class SpaceMovement : MonoBehaviour
     private void controls() {
         rot = transform.GetChild(1).localRotation;
         bool mov = false;
+        relForwardSpeed=(float)Math.Round(Double.Parse(relForwardSpeed.ToString()),4);
+        relSideSpeed = (float)Math.Round(Double.Parse(relSideSpeed.ToString()), 4);
+        relUpSpeed = (float)Math.Round(Double.Parse(relUpSpeed.ToString()), 4);
+
         this.transform.position += transform.forward * relForwardSpeed;
         this.transform.position += transform.forward * relSideSpeed;
         this.transform.position += transform.up * -relUpSpeed;
@@ -55,8 +59,22 @@ public class SpaceMovement : MonoBehaviour
         } else if (relForwardSpeed <= 0) {
             relForwardSpeed += acc / 2;
         }
-        if (Input.GetKey(KeyCode.A)) {
-            mov = true;
+        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.W) && relSideSpeed==0f) {
+            transform.Rotate(new Vector3(0f, 0.1f, 0f));
+            if (transform.GetChild(1).eulerAngles.z < 0.1f) {
+                transform.GetChild(1).localRotation = Quaternion.Euler(0f, 0f, 359f);
+            }
+            if (transform.GetChild(1).eulerAngles.z < 16 || transform.GetChild(1).eulerAngles.z > 345) {
+                transform.GetChild(1).Rotate(new Vector3(0f, 0f, -0.1f));
+            }
+        }
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && relSideSpeed == 0f) {
+            transform.Rotate(new Vector3(0f, -0.1f, 0f));
+            if (transform.GetChild(1).eulerAngles.z < 16 || transform.GetChild(1).eulerAngles.z > 345) {
+                transform.GetChild(1).Rotate(new Vector3(0f, 0f, 0.1f));
+            }
+        }
+        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) {
             if (relSideSpeed < maxSpeed) {
                 relSideSpeed += acc;
                 if (transform.GetChild(1).eulerAngles.z < 16 || transform.GetChild(1).eulerAngles.z > 345) {
@@ -68,15 +86,13 @@ public class SpaceMovement : MonoBehaviour
             relSideSpeed -= acc / 2;
             this.transform.position += transform.right * relSideSpeed;
         }
-        if (Input.GetKey(KeyCode.D)) {
-            mov = true;
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) {
 
             if (relSideSpeed < maxSpeed) {
                 if (transform.GetChild(1).eulerAngles.z < 0.1f) {
                     transform.GetChild(1).localRotation = Quaternion.Euler(0f, 0f, 359f);
                 }
                 relSideSpeed += acc;
-                Debug.Log(transform.GetChild(1).eulerAngles.z);
                 if (transform.GetChild(1).eulerAngles.z < 16 || transform.GetChild(1).eulerAngles.z > 345) {
                     transform.GetChild(1).Rotate(new Vector3(0f, 0f, -0.1f));
                 }
@@ -114,7 +130,7 @@ public class SpaceMovement : MonoBehaviour
         } else {
             startAnim = false;
             animplaying = false;
-            timer = 5;
+            timer = 1;
         }
 
         if (transform.GetChild(1).eulerAngles.z > 0 && transform.GetChild(1).eulerAngles.z < 270) {
@@ -139,9 +155,9 @@ public class SpaceMovement : MonoBehaviour
     }
     void MoveCam() {   
         timeSinceStarted += Time.deltaTime;
-        float percentage = timeSinceStarted / 5f;
+        float percentage = timeSinceStarted / 3f;
         transform.GetChild(2).position = Vector3.Lerp(transform.GetChild(2).position, transform.GetChild(1).GetChild(0).position,curve.Evaluate(percentage));
-        transform.GetChild(2).rotation = Quaternion.Lerp(rotanim, transform.GetChild(1).GetChild(0).rotation, curve.Evaluate(percentage));
+        transform.GetChild(2).LookAt(transform.GetChild(1));
 
         if (percentage >= 5) { 
             animplaying=false;
